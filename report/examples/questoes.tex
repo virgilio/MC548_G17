@@ -1,0 +1,111 @@
+\subsubsection*{Quantos classes (tipos) de endereço IP existem? Como
+  são especificados?}
+
+Há cinco classes distintas de endereços IPv4, que são identificadas
+pelos quatro primeiros bits dos trinta e dois que formam um endereço
+IPv4. A classe A tem endereços que começam com 0; os da B começam com
+10; os da C começam com 110; os da D começam com 1110 e os da E
+começam com 1111. A classe D é reservada para grupos de
+\emph{multicast} e a classe E é reservada para uso futuro. 
+
+As classes A, B e C dividem seus endereços IP em duas partes: o número
+de rede, que identifica cada rede, e o resto, que identifica um
+computador dentro de uma rede. Os números de rede têm em cada classe
+respectivamente 8, 16 e 24 bits.
+
+Entretanto, vale lembrar que as antigas classe IP hoje estão
+essencialmente obsoletas, por seguirem um esquema demasiado
+restritivo, incompatível com a expansão da Internet. Em vez disso, a
+rede é segmentada em uma hierarquia de sub-redes seguindo um sistema
+conhecido como \emph{Classless Inter-Domain Routing} (CIDR). Em CIDR,
+cada rede é especificada como um endereço seguido de um número, que
+representa o tamanho em bits do número de rede para endereços daquela
+rede.
+
+A cada rede corresponde uma máscara de sub-rede, que é um endereço com
+os bits do número de rede em 1 e o resto em 0. Dessa forma, dado um
+endereço, basta fazer um E bit-a-bit com sua máscara de sub-rede
+associada para se descobrir o número da rede. Pode-se considerar que
+as antigas classes de redes possuíam então máscaras de sub-rede
+implícitas.
+
+CIDR é interessante pois, além de permitir uma maior granularidade na
+atribuição de redes IP, possibilita que se agregue várias redes para
+formar uma super-rede, o que torna as tabelas de roteamento mais simples.
+
+\subsubsection*{No caso da rede Ethernet, o uso de broadcast aumenta o
+  tráfego na rede? Sim ou não? Justifique.}
+
+Os quadros enviados em Ethernet sempre são vistos por todas as
+máquinas que compartilham o mesmo enlace, logo o sistema funciona
+naturalmente em \emph{broadcast}, sem sobrecarga adicional. Nesse
+contexto, \emph{broadcasts} são enviados uma única vez, e todas as
+máquinas escutam e aceitam a mensagem. O que diferencia mensagens de
+\emph{broadcast} de mensagens ponto-a-ponto normais é o endereço de
+destino: existe um endereço MAC especial que indica que uma mensagem é
+destinada a todas as máquinas do enlace.
+
+\subsubsection*{ Como se consegue comunicação ponto-a-ponto na
+  Ethernet?}
+
+Embora os quadros sejam recebidos por todas as máquinas em uma mesma
+rede, uma dada máquina não manterá qualquer mensagem que receber: ela
+o fará baseada no endereço de destino do quadro. Cada placa de rede
+possui um endereço MAC, idealmente único, que permite que se enderece
+um quadro para uma máquina específica da rede.
+
+\subsubsection*{Após fazer login em uma estação UNIX do laboratório do
+  IC, como é possível determinar o endereço de broadcast para todas as
+  interfaces de rede (máquinas) dessa rede? Especifique os comandos
+  UNIX utilizados para obter a informação sobre broadcast para a rede
+  e explique porque foram utilizados e como funcionam.}
+
+Basta utilizar o comando:
+
+\noindent \verb!$ ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | awk '{print $3}'!
+
+\noindent O ifconfig exibe a configuração de todas as interfaces de
+rede dessa máquina. Os outros comandos são utilizados apenas para
+filtrar os endereços de \emph{broadcast} e remover a interface de
+\emph{loopback}.
+
+\subsubsection*{O seu grupo de projeto realiza broadcasts em um
+  laboratório do IC. Os quadros enviados poderão ser recebidos por
+  processos no laboratório vizinho? Suponha que cada laboratório é uma
+  rede Ethernet e que as redes dos laboratórios são interligadas por
+  roteadores.}
+
+Caso seja utilizado o endereço de \emph{broadcast} usual (\emph{direct
+  broadcast}), a passagem do \emph{broadcast} para as redes vizinhas
+vai depender da configuração da rede dos laboratórios envolvidos (ips
+e máscaras envolvidos) e da configuração do roteador para repassar o
+broadcast de uma rede para outra. Uma opção garantida para que o
+broadcast não extravase a rede é utilizar o endereço de broadcast
+especial \verb!255.255.255.255!.
+
+\subsection*{Multicast e Broadcast na Internet}
+
+Aplicações que usam \emph{multicast} na escala da Internet pública são
+praticamente inexistentes. Existem vários problemas de natureza
+econômica e de segurança com o protocolo e, como o IPv4 classifica seu
+suporte como opcional, a maioria dos roteadores da Internet não o
+implementam.
+
+Problemas de segurança incluem ataques que usam o IGMP (protocolo que
+controla a entrada e saída de clientes em grupos de \emph{multicast}) como
+amplificador de pacotes para negação de serviço. Outro problema
+relacionado a segurança é que não há como o remetente controlar quais
+destinatários são ou não aceitos.
+
+Tráfego \emph{multicast} também é difícil de rastrear e cobrar, motivo
+pelo qual provedores de Internet (ISPs) em geral o desabilitam. O
+Mbone é uma alternativa gratuita que consiste de uma infraestrutura de
+enlaces paralela à da Internet. Por ser paralela, depende de que ISPs
+estejam conectados a ela para que seja acessível a usuários
+finais. Como isso raramente acontece, seu uso é basicamente restrito a
+aplicações científicas e de engenharia.
+
+O broadcast IP além das redes locais sofre de problemas similares de
+segurança e controle de uso de banda, sendo por isso desabilitado
+pelos provedores de camadas mais altas.
+
