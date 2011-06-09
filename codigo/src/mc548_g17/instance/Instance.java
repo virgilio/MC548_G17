@@ -15,12 +15,14 @@ public class Instance {
     private int numberOfSpots;
     private int numberOfStations;
     private ArrayList<Station> stations;
+    private ArrayList<Spot> spots;
 
     public Instance(String file) {
         InstanceReader ir = new InstanceReader(file);
         this.numberOfSpots = ir.getNumberOfSpots();
         this.numberOfStations = ir.getNumberOfStations();
         this.stations  = ir.getStationList();
+        this.spots = ir.getSpots();
     }
 
     public int getNumberOfSpots() {
@@ -46,4 +48,13 @@ public class Instance {
     public void setStations(ArrayList<Station> stations) {
         this.stations = stations;
     }
+
+    public ArrayList<Spot> getSpots() {
+        return spots;
+    }
+
+    public void setSpots(ArrayList<Spot> spots) {
+        this.spots = spots;
+    }
+
 }

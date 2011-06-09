@@ -1,0 +1,16 @@
+* Criar classe Solution
+** custo
+** ArrayList de Station
+** metodo: getters
+* Criar classe Annealing
+** metodo: SolucaoInicial (Instance, Solution)
+** metodo: GeraVizinhanca (Instance, Solution, Vizinho)
+* Main
+** Escrever algoritmo básico
+*** Instance, Solution, Vizinho, Melhor
+* Verificar as condições de parada
+** alfa, delta, k, T
+** tempo
+* Verificar tamanho das instâncias
+* Salvar soluções intermediarias
+

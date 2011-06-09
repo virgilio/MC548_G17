@@ -21,11 +21,13 @@ public class InstanceReader {
     private int numberOfSpots;
     private int numberOfStations;
     private ArrayList<Station> stations;
+    private ArrayList<Spot> spots;
     private BufferedReader instances;
 
     public InstanceReader(String filename) {
         int lineNumber = 0;
         this.stations = new ArrayList<Station>();
+        this.spots = new ArrayList<Spot>();
         this.numberOfSpots = 0;
         this.numberOfStations = 0;
         try {
@@ -36,17 +38,24 @@ public class InstanceReader {
                 while ((lineData = this.instances.readLine()) != null) {
                     if (lineNumber == 0) {
                         this.numberOfSpots = Integer.parseInt(lineData.split(" ")[1]);
+                        for(int i = 0; i < this.numberOfSpots; i++){
+                            this.spots.add(new Spot(i));
+                        }
                         lineNumber++;
                     } else if (lineNumber == 1) {
                         this.numberOfStations = Integer.parseInt(lineData.split(" ")[1]);
                         lineNumber++;
                     } else {
                         String[] lineFields = lineData.split(" ");
-                        Station s = new Station(lineFields[0], Double.parseDouble(lineFields[1]));
+                        
+                        Station st = new Station(lineFields[0], Double.parseDouble(lineFields[1]));
+                        
                         for (int i = 2; i < lineFields.length; i++) {
-                            s.getCoveredSpots().add(Integer.parseInt(lineFields[i]));
+                            int idx = Integer.parseInt(lineFields[i]) - 1;
+                            st.getCoveredSpots().add(spots.get(idx));
+                            spots.get(idx).getStations().add(st);
                         }
-                        stations.add(s);
+                        stations.add(st);
                     }
                 }
                 instances.close();
@@ -68,5 +77,9 @@ public class InstanceReader {
 
     public ArrayList<Station> getStationList() {
         return this.stations;
+    }
+
+    ArrayList<Spot> getSpots() {
+        return this.spots;
     }
 }

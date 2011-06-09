@@ -14,19 +14,19 @@ public class Station {
 
     private String stationId;
     private double stationCost;
-    private ArrayList<Integer> coveredSpots;
+    private ArrayList<Spot> coveredSpots;
 
     public Station(String stationId, Double stationCost) {
         this.stationId = stationId;
         this.stationCost = stationCost;
-        this.coveredSpots = new ArrayList<Integer>();
+        this.coveredSpots = new ArrayList<Spot>();
     }
 
-    public ArrayList<Integer> getCoveredSpots() {
+    public ArrayList<Spot> getCoveredSpots() {
         return coveredSpots;
     }
 
-    public void setCoveredSpots(ArrayList<Integer> coveredSpots) {
+    public void setCoveredSpots(ArrayList<Spot> coveredSpots) {
         this.coveredSpots = coveredSpots;
     }
 
