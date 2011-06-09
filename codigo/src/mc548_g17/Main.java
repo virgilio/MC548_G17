@@ -29,11 +29,11 @@ public class Main {
         Annealing.gerarVizinhanca(i, c, n);
 
         for (int k = 0; k < i.getStations().size(); k++) {
-            System.out.println(i.getStations().get(k).getStationCost());
+            //System.out.println(i.getStations().get(k).getStationCost());
         }
 
         for (int k = 0; k < i.getSpots().size(); k++){
-            System.out.println(i.getSpots().get(k).getStations().size());
+            //System.out.println(i.getSpots().get(k).getStations().size());
         }
     }
 
