@@ -20,19 +20,19 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Instance i = new Instance("instances");
-        Solution c = new Solution();
-        Solution n = new Solution();
-        Solution b = new Solution();
+        Instance inst = new Instance("instances");
+        Solution curr = new Solution(inst.getNumberOfSpots());
+        Solution neig = new Solution(inst.getNumberOfSpots());
+        Solution best = new Solution(inst.getNumberOfSpots());
 
-        Annealing.solucaoInicial(i, c);
-        Annealing.gerarVizinhanca(i, c, n);
+        Annealing.solucaoInicial(inst, best);
+        Annealing.gerarVizinhanca(inst, curr, neig);
 
-        for (int k = 0; k < i.getStations().size(); k++) {
+        for (int k = 0; k < inst.getStations().size(); k++) {
             //System.out.println(i.getStations().get(k).getStationCost());
         }
 
-        for (int k = 0; k < i.getSpots().size(); k++){
+        for (int k = 0; k < inst.getSpots().size(); k++){
             //System.out.println(i.getSpots().get(k).getStations().size());
         }
     }

@@ -14,14 +14,25 @@ import mc548_g17.instance.Station;
  */
 
 public class Solution {
-    private int custo;
+    private double custo;
     private ArrayList<Station> stationSet;
+    private ArrayList<Integer> spotsCovering;
 
-    public int getCusto() {
+    public Solution(int numberOfSpots) {
+        this.stationSet = new ArrayList<Station>();
+        this.spotsCovering = new ArrayList<Integer>();
+        for(int i = 0; i < numberOfSpots; i++){
+            this.spotsCovering.add(i, 0);
+        }
+
+        this.custo = 0;
+    }
+
+    public double getCusto() {
         return custo;
     }
 
-    public void setCusto(int custo) {
+    public void setCusto(double custo) {
         this.custo = custo;
     }
 
@@ -33,4 +44,11 @@ public class Solution {
         this.stationSet = stationSet;
     }
 
+    public ArrayList<Integer> getSpotsCovering() {
+        return spotsCovering;
+    }
+
+    public void setSpotsCovering(ArrayList<Integer> spotsCovering) {
+        this.spotsCovering = spotsCovering;
+    }
 }

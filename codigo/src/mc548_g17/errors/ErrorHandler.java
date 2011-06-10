@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package mc548_g17.testing;
+package mc548_g17.errors;
 
 /**
  *
- * @author virgilio
+ * @author ra036470
  */
-public class Test {
+public class ErrorHandler {
     
 }
