@@ -25,16 +25,11 @@ public class Main {
         Solution neig = new Solution(inst.getNumberOfSpots());
         Solution best = new Solution(inst.getNumberOfSpots());
 
-        Annealing.solucaoInicial(inst, best);
+        Annealing.solucaoInicial(inst, curr);
+        best = curr;
         Annealing.gerarVizinhanca(inst, curr, neig);
 
-        for (int k = 0; k < inst.getStations().size(); k++) {
-            //System.out.println(i.getStations().get(k).getStationCost());
-        }
-
-        for (int k = 0; k < inst.getSpots().size(); k++){
-            //System.out.println(i.getSpots().get(k).getStations().size());
-        }
+        System.out.println(neig.getCusto());
     }
 
     public Boolean getTesting() {
