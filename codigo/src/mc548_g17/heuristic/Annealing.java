@@ -94,7 +94,11 @@ public class Annealing {
     }
 
     /**
-     * 
+     * Remoção de redundância (Solução)
+     *       Enquanto
+     *               Selecione a estação mais cara destas estações.
+     *               Remova esta Estação.
+     *               Atualize coberturas.
      * @param neig
      */
     private void removerRedundancia (Solution neig){
