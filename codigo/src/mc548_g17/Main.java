@@ -4,6 +4,8 @@
  */
 package mc548_g17;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import mc548_g17.heuristic.Annealing;
 import mc548_g17.heuristic.Solution;
 import mc548_g17.instance.Instance;
@@ -13,49 +15,75 @@ import mc548_g17.instance.Station;
  *
  * @author Virgilio
  */
-
 public class Main {
+
+    public static int lim1 = 40;
+    public static int lim2 = 100;
+    public static double temp = 100000000000.00;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        HashMap<Long, Double> currCustos = new HashMap<Long, Double>();
+        HashMap<Long, Double> bestCustos = new HashMap<Long, Double>();
         Instance inst = new Instance("instances");
         Solution curr = new Solution(inst.getNumberOfSpots());
         Solution neig = new Solution(inst.getNumberOfSpots());
         Solution best = new Solution(inst.getNumberOfSpots());
-        int L2 = 0, L1 = 0;
-        double delta, T = 100000000010.00, k = 1, alfa = 0.8;
-        int prob = 0;
-        
+        long initTime, currTime;
+
+        int L2 = 0, L1 = 0, n = 0, times = 0;
+        double delta, T = temp, k = 1, alfa = 1;
+
+        initTime = System.currentTimeMillis();
         Annealing.solucaoInicial(inst, curr);
         best = curr.mclone();
-        while (L1 < 100) {
-            while (L2 < 100) {
-                neig = new Solution(inst.getNumberOfSpots());
-                Annealing.gerarVizinhanca(inst, curr, neig);
-                delta = neig.getCusto() - curr.getCusto();
-                if (delta < 0) {
-                    curr = neig.mclone();
-                    if (curr.getCusto() < best.getCusto()){
-                        best = curr.mclone();
+        currTime = System.currentTimeMillis();
+        while (((currTime - initTime) < 60000)) {
+            while (L1 < lim1) {
+                while (L2 < lim2) {
+                    neig = new Solution(inst.getNumberOfSpots());
+                    Annealing.gerarVizinhanca(inst, curr, neig);
+                    delta = neig.getCusto() - curr.getCusto();
+                    if (delta < 0) {
+                        curr = neig.mclone();
+                        currCustos.put(System.currentTimeMillis(), curr.getCusto());
+                        if (curr.getCusto() < best.getCusto()) {
+                            best = curr.mclone();
+                            bestCustos.put(System.currentTimeMillis(), best.getCusto());
+                        }
+                    } else if (Annealing.aceitarSolucao(delta, T, k)) {
+                        curr = neig.mclone();
+                        currCustos.put(System.currentTimeMillis(), curr.getCusto());
                     }
-                } else if (Annealing.aceitarSolucao(delta, T, k)){
-                    prob++;
-                    curr = neig.mclone();
+                    L2++;
                 }
-                L2++;
+                L2 = 0;
+                T = alfa * T;
+                L1++;
             }
-            L2 =  0;
-            T = alfa*T;
-            L1++;
+            n++;
+            times++;
+            L1 = 0;
+            alfa = alfa * 0.9;
+            T = temp * (10 ^ n);
+            currTime = System.currentTimeMillis();
         }
-
-        System.out.println("Probabilidade de aceitar: " + prob);
-
+        System.out.println("Numero de Execucoes: " + times);
         System.out.println("Valor: " + best.getCusto());
         System.out.println("Total: " + best.getStationSet().size());
-        /*for (Station s : best.getStationSet()){
+        for (Station s : best.getStationSet()) {
             System.out.println(s.getStationId());
-        }*/
+        }
+        for(Long key : currCustos.keySet()){
+            System.out.println(key + "," + currCustos.get(key));
+        }
+
+        System.out.println("----------------------------------------");
+
+        for(Long key : bestCustos.keySet()){
+            System.out.println(key + "," + bestCustos.get(key));
+        }
     }
 }

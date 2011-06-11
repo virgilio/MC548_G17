@@ -76,7 +76,7 @@ public class Annealing {
         int spot;
         int trocas = 0;
         for (Station station : curr.getStationSet()){
-            if(Math.random() < 0.99){
+            if(Math.random() < 0.9){
                 neig.addStation(station);
                 trocas++;
             }
