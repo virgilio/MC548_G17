@@ -5,6 +5,7 @@
 package mc548_g17.heuristic;
 
 import java.util.ArrayList;
+import java.util.Random;
 import mc548_g17.instance.Instance;
 import mc548_g17.instance.Spot;
 import mc548_g17.instance.Station;
@@ -44,65 +45,77 @@ public class Annealing {
             }
             Spot spot = inst.getSpots().get(currSpot);
 
-            for (int i = 0; i < spot.getStations().size(); i++) {
+            for (int i = 0; i < spot.getStations().size(); i++) { //TODO Pontos não cobertos
                 if (spot.getStations().get(i).getCoveredSpots().size() >= maxCovering) {
                     currStation = i;
                     maxCovering = spot.getStations().get(i).getCoveredSpots().size();
                 }
             }
-            Station station = spot.getStations().get(maxCovering);
-            
+            Station station = spot.getStations().get(currStation);
+
             s.addStation(station);
             k++;
         }
-        System.out.println(Annealing.class.getName()
-                + "::solucaoInicial: Numero de iteracoes: "
-                + k
-                + ", Complexidade: O(n^2)");
     }
 
     /**
      * Vizinho Aleatório (Instancia, Solução, Vizinho)
-     *        Selecione um ponto aleatoriamente de Solução.
-     *        Copie as estação de Solução que não cobrem este ponto para Vizinho.
-     *        enquanto minimo do vetor de cobertura de Vizinho é 0
-     *                Selecione aleatoriamente um ponto não coberto de Vizinho
-     *                Selecione aleatoriamente uma restrição para cobrir este ponto
-     *                Adicione estação e atualize cobertura.
-     *        Remoção de redundância(Solução)
+     *      - Selecione um ponto aleatoriamente de Solução.
+     *      - Copie as estações de Solução que não cobrem este ponto para Vizinho.
+     *      - enquanto minimo do vetor de cobertura de Vizinho é 0
+     *          Selecione aleatoriamente um ponto não coberto de Vizinho
+     *          Selecione aleatoriamente uma estação para cobrir este ponto
+     *          Adicione estação e atualize cobertura.
+     *      - Remoção de redundância(Solução)
      * 
      * @param inst
      * @param curr
      * @param neig
      */
     public static void gerarVizinhanca(Instance inst, Solution curr, Solution neig) {
-        int randomSpot = curr.getRandomSpot();
-        Spot spot = inst.getSpots().get(randomSpot);
-        ArrayList<Station> stations = curr.getStationSet();
-
-        for (int i = 0; i < stations.size(); i++) {
-            ArrayList<Spot> spots = stations.get(i).getCoveredSpots();
-            if (!spots.contains(spot)) {
-                neig.addStation(stations.get(i));
+        int spot;
+        int trocas = 0;
+        for (Station station : curr.getStationSet()){
+            if(Math.random() < 0.99){
+                neig.addStation(station);
+                trocas++;
             }
         }
-        
         ArrayList<Integer> spots = neig.getSpotsCovering();
-        while ((randomSpot = spots.indexOf(Integer.valueOf(0))) != -1) {
-            neig.addStation(inst.getSpots().get(randomSpot).randomStation());
+        while ((spot = spots.indexOf(Integer.valueOf(0))) != -1) {
+            neig.addStation(inst.getSpots().get(spot).randomStation());
         }
+
+        removerRedundancia(neig);
     }
 
     /**
      * Remoção de redundância (Solução)
-     *       Enquanto
-     *               Selecione a estação mais cara destas estações.
-     *               Remova esta Estação.
-     *               Atualize coberturas.
+     *       Para toda estacao da Solução]
+     *          Remova se não existe ponto com cobertura igual a 1
+     * 
      * @param neig
      */
-    private void removerRedundancia (Solution neig){
-        
+    private static void removerRedundancia(Solution neig) {
+        ArrayList<Station> stations = neig.getStationSet();
+        for (int i = 0; i < stations.size(); i++) {
+            Boolean isRedundante = Boolean.TRUE;
+            ArrayList<Spot> stationSpots = stations.get(i).getCoveredSpots();
+            int k = 0;
+            while (isRedundante && k < stationSpots.size()) {
+                int index = stationSpots.get(k).getSpotNumber();
+                if (neig.getSpotsCovering().get(index) == 1) {
+                    isRedundante = Boolean.FALSE;
+                }
+                k++;
+            }
+            if (isRedundante) {
+                neig.removeStation(stations.get(i));
+            }
+        }
     }
 
+    public static Boolean aceitarSolucao(double delta, double T, double k) {
+        return Math.exp(-(delta/(k*T))) > Math.random();
+    }
 }

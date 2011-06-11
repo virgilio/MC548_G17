@@ -73,4 +73,13 @@ public class Solution {
         s.setCusto(custo);
         return s;
     }
+
+    void removeStation(Station station) {
+        stationSet.remove(station);
+        for (int i = 0; i < station.getCoveredSpots().size(); i++) {
+            int index = station.getCoveredSpots().get(i).getSpotNumber();
+            spotsCovering.set(index, spotsCovering.get(index) -1);
+        }
+        custo -= station.getStationCost();
+    }
 }
