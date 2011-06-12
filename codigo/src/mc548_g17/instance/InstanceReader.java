@@ -24,6 +24,41 @@ public class InstanceReader {
     private ArrayList<Spot> spots;
     private BufferedReader instances;
 
+    /**
+     * <h3>Sobre</h3>
+     * InstanceReader(String filename)
+     * A partir do arquivo dado como entrada para o problema, é criado um objeto
+     * da classe Instance que conterá os dados fornecidos pela entrada:
+     *      int numberOfSpots,
+     *      int numberOfStations,
+     *      ArrayList<Station> stations,
+     *      ArrayList<Spot> spots e
+     *      Um leitor para o arquivo: BufferedReader instances;
+     *
+     * O algoritmo lê linha por linha do arquivo e cria os devidos objetos:
+     * <ul>
+     * <li>Linha 0: Número n de pontos a serem cobertos. É atribuído valor n para o
+     * atributo numberOfSpots e são criados os n pontos do vetor spots;</li>
+     * <li>Linha 1: Número de estações m. É atribuído tal valor ao atributo
+     * numberOfStations.</li>
+     * </ul>
+     * A partir da linha 1: Dados de cada estação: identificador, custo e 
+     * pontos cobertos. Para cada linha lida é criado um objeto do tipo Station
+     * com o identificador sendo a primeira informação fornecida na linha e
+     * custo a segunda informação. Cada informação lida nessa linha a partir de
+     * então representa o identificador de um ponto a ser coberto pela estação.
+     * 
+     * Para tratar tal fato, é adicionado o ponto do identificador à lista
+     * coveredSpots da estação lida e adicionada a estação à lista de estações
+     * de cobertura daquele ponto stations
+     * 
+     * A estação criada é adicionada à lista de estações da instância.
+     *
+     *
+     *
+     * @param filename
+     */
+
     public InstanceReader(String filename) {
         int lineNumber = 0;
         this.stations = new ArrayList<Station>();

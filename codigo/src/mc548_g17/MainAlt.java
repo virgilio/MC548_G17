@@ -15,7 +15,7 @@ import mc548_g17.instance.Station;
  *
  * @author Virgilio
  */
-public class Main {
+public class MainAlt {
 
     public static int lim1 = 50;
     public static int lim2 = 150;

@@ -57,6 +57,15 @@ public class Solution {
         return spotsCovering.get((new Random()).nextInt(spotsCovering.size()));
     }
 
+    /**
+     * Adicionando uma Esta&ccedil;&atilde;o
+     *
+     * Ao adicionar uma Esta&ccedil;&atilde;o, &eacute; necess&aacute;rio a adi&ccedil;&atilde;o
+     * da mesma no ArrayList de Station, atualizar o ArrayList de cobertura
+     * e por fim atualizar o custo total da solução
+     *
+     * @param station
+     */
     public void addStation(Station station) {
         stationSet.add(station);
         for (int i = 0; i < station.getCoveredSpots().size(); i++) {
@@ -66,6 +75,20 @@ public class Solution {
         custo += station.getStationCost();
     }
 
+    /**
+     *
+     * Clonando uma solu&ccedil;&atilde;o
+     *
+     * &Eacute; necess&aacute;rio lembrar que a clonagem em Java &eacute; feita de forma rasa, ou seja
+     * n&atilde;o é feita c&oacute;pia dos valores. A nossa c&oacute;pia &eacute feita
+     * na profundidade da Inst&acirc;ncia, pe&ccedil;a imut&aacute;vel na estrutura de dados usada
+     *
+     * @return Um clone profundo do objeto Solution
+     *
+     * @see Object clone
+     *
+     */
+
     public Solution mclone() {
         Solution s = new Solution(this.spotsCovering.size());
         s.getStationSet().addAll(stationSet);
@@ -74,7 +97,17 @@ public class Solution {
         return s;
     }
 
-    void removeStation(Station station) {
+    /**
+     * Remove a esta&ccedil;&atilde;o em quest&atilde;o realizando opera&ccedil;&otilde;es
+     * similares (inversas) &agrave; adi&ccedil;&atilde;o de objeto similar.
+     *
+     *
+     * @param station
+     *
+     * @see Solution addStation
+     */
+
+    public void removeStation(Station station) {
         stationSet.remove(station);
         for (int i = 0; i < station.getCoveredSpots().size(); i++) {
             int index = station.getCoveredSpots().get(i).getSpotNumber();
