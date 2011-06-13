@@ -31,8 +31,8 @@ public class MainAlt {
             System.exit(-1);
         } else {
             System.out.println("Utilzando algoritmo alternativo de geracao de vizinhanca: " + Annealing.class.getCanonicalName() + "::gerarVizinhanca2");
-            HashMap<Long, Double> currCustos = new HashMap<Long, Double>();
-            HashMap<Long, Double> bestCustos = new HashMap<Long, Double>();
+            /*HashMap<Long, Double> currCustos = new HashMap<Long, Double>();
+            HashMap<Long, Double> bestCustos = new HashMap<Long, Double>();*/
             Instance inst = new Instance(args[0]);
             Solution curr = new Solution(inst.getNumberOfSpots());
             Solution neig = new Solution(inst.getNumberOfSpots());
@@ -54,14 +54,14 @@ public class MainAlt {
                         delta = neig.getCusto() - curr.getCusto();
                         if (delta < 0) {
                             curr = neig.mclone();
-                            currCustos.put(System.currentTimeMillis(), curr.getCusto());
+                            //currCustos.put(System.currentTimeMillis(), curr.getCusto());
                             if (curr.getCusto() < best.getCusto()) {
                                 best = curr.mclone();
-                                bestCustos.put(System.currentTimeMillis(), best.getCusto());
+                                //bestCustos.put(System.currentTimeMillis(), best.getCusto());
                             }
                         } else if (Annealing.aceitarSolucao(delta, T, k)) {
                             curr = neig.mclone();
-                            currCustos.put(System.currentTimeMillis(), curr.getCusto());
+                            //currCustos.put(System.currentTimeMillis(), curr.getCusto());
                         }
                         L2++;
                     }
