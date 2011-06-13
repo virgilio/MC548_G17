@@ -1,6 +1,7 @@
 <project>
   <target name="clean">
     <delete dir="build"/>
+    <delete dir="javadoc"/>
   </target>
   
   <target name="compile">
