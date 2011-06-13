@@ -25,65 +25,71 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        HashMap<Long, Double> currCustos = new HashMap<Long, Double>();
-        HashMap<Long, Double> bestCustos = new HashMap<Long, Double>();
-        Instance inst = new Instance("instances");
-        Solution curr = new Solution(inst.getNumberOfSpots());
-        Solution neig = new Solution(inst.getNumberOfSpots());
-        Solution best = new Solution(inst.getNumberOfSpots());
-        long initTime, currTime;
 
-        int L2 = 0, L1 = 0, n = 0, times = 0;
-        double delta, T = temp, k = 1, alfa = 0.99;
+        if (args.length < 1) {
+            System.out.println("Nome do arquivo nao especificado");
+            System.exit(-1);
+        } else {
+            HashMap<Long, Double> currCustos = new HashMap<Long, Double>();
+            HashMap<Long, Double> bestCustos = new HashMap<Long, Double>();
+            Instance inst = new Instance(args[0]);
+            Solution curr = new Solution(inst.getNumberOfSpots());
+            Solution neig = new Solution(inst.getNumberOfSpots());
+            Solution best = new Solution(inst.getNumberOfSpots());
+            long initTime, currTime;
 
-        initTime = System.currentTimeMillis();
-        Annealing.solucaoInicial(inst, curr);
-        best = curr.mclone();
-        currTime = System.currentTimeMillis();
-        while (((currTime - initTime) < 60000)) {
-            while (L1 < lim1) {
-                while (L2 < lim2) {
-                    neig = new Solution(inst.getNumberOfSpots());
-                    Annealing.gerarVizinhanca(inst, curr, neig);
-                    delta = neig.getCusto() - curr.getCusto();
-                    if (delta < 0) {
-                        curr = neig.mclone();
-                        currCustos.put(System.currentTimeMillis(), curr.getCusto());
-                        if (curr.getCusto() < best.getCusto()) {
-                            best = curr.mclone();
-                            bestCustos.put(System.currentTimeMillis(), best.getCusto());
-                        }
-                    } else if (Annealing.aceitarSolucao(delta, T, k)) {
-                        curr = neig.mclone();
-                        currCustos.put(System.currentTimeMillis(), curr.getCusto());
-                    }
-                    L2++;
-                }
-                L2 = 0;
-                T = alfa * T;
-                L1++;
-            }
-            n++;
-            times++;
-            L1 = 0;
-            alfa = alfa * 0.99;
-            T = temp * (10 ^ n);
+            int L2 = 0, L1 = 0, n = 0, times = 0;
+            double delta, T = temp, k = 1, alfa = 0.99;
+
+            initTime = System.currentTimeMillis();
+            Annealing.solucaoInicial(inst, curr);
+            best = curr.mclone();
             currTime = System.currentTimeMillis();
-        }
-        System.out.println("Numero de Execucoes: " + times);
-        System.out.println("Valor: " + best.getCusto());
-        System.out.println("Total: " + best.getStationSet().size());
-        for (Station s : best.getStationSet()) {
-            System.out.println(s.getStationId());
-        }
-        for(Long key : currCustos.keySet()){
-            System.out.println(key + "," + currCustos.get(key));
-        }
+            while (((currTime - initTime) < 60000)) {
+                while (L1 < lim1) {
+                    while (L2 < lim2) {
+                        neig = new Solution(inst.getNumberOfSpots());
+                        Annealing.gerarVizinhanca(inst, curr, neig);
+                        delta = neig.getCusto() - curr.getCusto();
+                        if (delta < 0) {
+                            curr = neig.mclone();
+                            currCustos.put(System.currentTimeMillis(), curr.getCusto());
+                            if (curr.getCusto() < best.getCusto()) {
+                                best = curr.mclone();
+                                bestCustos.put(System.currentTimeMillis(), best.getCusto());
+                            }
+                        } else if (Annealing.aceitarSolucao(delta, T, k)) {
+                            curr = neig.mclone();
+                            currCustos.put(System.currentTimeMillis(), curr.getCusto());
+                        }
+                        L2++;
+                    }
+                    L2 = 0;
+                    T = alfa * T;
+                    L1++;
+                }
+                n++;
+                times++;
+                L1 = 0;
+                alfa = alfa * 0.95;
+                T = temp * (10 ^ n);
+                currTime = System.currentTimeMillis();
+            }
+            System.out.println("Numero de Execucoes: " + times);
+            System.out.println("Valor: " + best.getCusto());
+            System.out.println("Total: " + best.getStationSet().size());
+            for (Station s : best.getStationSet()) {
+                System.out.println(s.getStationId());
+            }
+            /*for (Long key : currCustos.keySet()) {
+                System.out.println(key + "," + currCustos.get(key));
+            }
 
-        System.out.println("----------------------------------------");
+            System.out.println("----------------------------------------");
 
-        for(Long key : bestCustos.keySet()){
-            System.out.println(key + "," + bestCustos.get(key));
+            for (Long key : bestCustos.keySet()) {
+                System.out.println(key + "," + bestCustos.get(key));
+            }*/
         }
     }
 }

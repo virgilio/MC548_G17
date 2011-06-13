@@ -1,0 +1,47 @@
+<project>
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+  
+  <target name="compile">
+    <mkdir dir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes"/>
+  </target>
+  
+  <target name="build">
+    <delete dir="build"/>
+    <mkdir dir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes"/>
+    <mkdir dir="build/jar"/>
+    <jar destfile="build/jar/saveWorld.jar" basedir="build/classes">
+      <manifest>
+	  <attribute name="Main-Class" value="mc548_g17.Main"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="buildAlt">
+    <delete dir="build"/>
+    <mkdir dir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes"/>
+    <mkdir dir="build/jar"/>
+    <jar destfile="build/jar/saveWorld.jar" basedir="build/classes">
+      <manifest>
+	  <attribute name="Main-Class" value="mc548_g17.MainAlt"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="javadoc" >
+    <mkdir dir="javadoc/"/>
+    <javadoc 
+	destdir="javadoc/">
+      <taglet
+	  name="org.apache.commons.attributes.javadoc.CATaglet"
+	  path="${ant.home}/lib/commons-attributes-compiler-2.2.jar"
+	  />
+      <fileset dir="." includes="**/*.java" />
+    </javadoc>
+  </target>
+
+</project>

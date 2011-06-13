@@ -1,9 +1,26 @@
 Projeto da matéria MC548
 
-Nesse repositório pode-se encontrar os fontes do projeto e seu relatório.
-Além disso pode-se encontrar material relativo a heurísticas
+Nesse repositório pode-se encontrar os fontes do projeto e seu relatório. Além disso pode-se encontrar material relativo a heurísticas
 
-Se você não é familiarizado com github, utilize o seguinte guia
+Para gerar uma instância para o algoritmo vá em util/instancias e poderá encontrar um script que gera instâncias no formato desejado para o problema
+
+Para executar, vá no diretório codigo e siga os seguintes passos:
+
+$ ant build
+$ ./saveWorld caminho_para_arquivo_instancias
+
+Para executar com algoritmo alternativo, já no diretório codigo:
+
+$ ant buildAlt
+$ ./saveWorld caminho_para_arquivo_instancias
+
+O javadoc da ferramenta pode ser gerado, já no diretório codigo:
+
+$ ant javadoc
+
+Há um relatório em formato pdf com maiores informações e o javadoc da ferramenta estará disponível através da URL:
+
+http://www.students.ic.unicamp.br/~ra036470/javadoc/
 
 Autores:
 Alline Kobayashi

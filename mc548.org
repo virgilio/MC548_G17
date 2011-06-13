@@ -13,4 +13,12 @@
 ** tempo
 * Verificar tamanho das instâncias
 * Salvar soluções intermediarias
-
+* Criar gráficos
+** variação da melhor resposta
+** variação da resposta corrente para verificar a aceitação (as respostas pulam)
+* Criar build.xml
+* Criar README
+** Como usar o ant
+** Onde buscar informações
+** Repositorio git
+* Criar mais de Main, pra usar os dois geradores de vizinhaça

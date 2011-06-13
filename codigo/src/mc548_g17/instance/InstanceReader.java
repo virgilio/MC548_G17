@@ -96,9 +96,11 @@ public class InstanceReader {
                 instances.close();
             } catch (IOException ex) {
                 Logger.getLogger(InstanceReader.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(-2);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(InstanceReader.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(-2);
         }
     }
 
